@@ -1,5 +1,6 @@
 import os
 import time
+refused = ['py', 'cpp', 'cs', 'css', 'js', 'html', 'php', 'ts', 'cmd', 'exe', 'NET', 'C', 'vb']
 
 
 def get_type():
@@ -21,12 +22,13 @@ def get_type():
                 li.append(name) 
                 na.append(fi) 
                 
-    return li, name, fi  
+    return li, name, fi, typ  
     
-def make_folders(li):
+def make_folders(li, typ):
     for name in li: 
         if not os.path.exists(name): 
-            os.makedirs(name) 
+            if not typ in refused:
+                os.makedirs(name) 
         
             print("Done!") 
         
@@ -59,7 +61,7 @@ def move_files():
             src = "%s\%s" %(name,fi)
             
             if not os.path.exists(src):
-                if typ != "py":
+                if not typ in refused :
                     os.rename(fi,src) 
                 else :
                     print(f"File {fi} can not be moved because it is dependent on the location!")
@@ -75,7 +77,7 @@ def move_files():
     
 
 
-types, jmeno, fi =get_type() 
+types, jmeno, fi, typ =get_type() 
 
-make_folders(types) 
+make_folders(types,typ) 
 move_files()
